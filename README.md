@@ -9,7 +9,7 @@ This app calls multiple numbers at the same time. Only the first user to answer 
     npm install
 
 ## 2. Populate “.env”
-Copy `.env-samp` file as `.env` and put in the values for the following:
+Copy `.env-sample` file as `.env` and put in the values for the following:
  
  
 
