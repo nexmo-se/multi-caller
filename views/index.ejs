@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <script src="js/vonageClientSDK.min.js"></script>
+  <style>
+    input, button {
+      font-size: 1rem;
+    }
+    #call, #hangup {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Call Multiple Phone and Talk to First to Answer</h1>
+  <label for="phone-number">Enter Numbers here (separate numbers with comma):</label><br>
+  <input type="text" name="phone-number" value="" placeholder="i.e. 14155550100,122300011,1023330222" id="phone-number" size="60">
+  <button type="button" id="call">Call</button>
+  <button type="button" id="hangup">Hang Up</button>
+  <div id="status"></div>
+  
+  <script>
+    const callButton = document.getElementById("call");
+    const hangUpButton = document.getElementById("hangup");
+    const statusElement = document.getElementById("status");
+    const USER_JWT = "<%= user_token %>";
+    const client = new vonageClientSDK.VonageClient({apiUrl: "<%= api_host %>"})
+  
+    let callId = null;
+
+    client.createSession(USER_JWT)
+      .then((sessionId) => {
+        console.log("Id of created session: ", sessionId);
+        callButton.style.display = "inline";
+      })
+      .catch((error) => {
+        console.error("Error creating session: ", error);
+      });
+
+    client.on('conversationEvent', (event) => {
+      if (event.kind === "member:joined") {
+        callButton.style.display = "none";
+        hangUpButton.style.display = "inline";
+      }
+    });
+
+    //hangup happened
+    client.on('callHangup', (id, q, reason) => {      
+      callId = null;
+      callButton.style.display = "inline";
+      hangUpButton.style.display = "none";
+      
+    })
+
+    callButton.addEventListener("click", event => {
+      const destination = document.getElementById("phone-number").value;
+      if (destination !== "") {
+        client.serverCall({ to: destination, type: "app" })
+          .then((_callId) => {
+            callId = _callId;
+          })
+          .catch((error)=>{
+            console.error(`Error making call: ${error}`);
+          });
+      } else {
+        statusElement.innerText = 'Please enter your phone number.';
+      }
+    });
+
+    hangUpButton.addEventListener("click", () => {
+      client.hangup(callId)
+        .then(() => {
+          hangUpButton.style.display = "none";
+          callButton.style.display = "inline";
+        })
+        .catch(error => {
+          console.error("Error hanging up call: ", error);
+        });                
+    });
+  </script>
+</body>
+
+</html>
