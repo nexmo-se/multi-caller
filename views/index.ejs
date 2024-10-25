@@ -14,7 +14,7 @@
 </head>
 
 <body>
-  <h1>Call Multiple Phone and Talk to First to Answer</h1>
+  <h1>Call Multiple Phone Numbers and Talk to the First User to Answer</h1>
   <label for="phone-number">Enter Numbers here (separate numbers with comma):</label><br>
   <input type="text" name="phone-number" value="" placeholder="i.e. 14155550100,122300011,1023330222" id="phone-number" size="60">
   <button type="button" id="call">Call</button>
@@ -26,7 +26,7 @@
     const hangUpButton = document.getElementById("hangup");
     const statusElement = document.getElementById("status");
     const USER_JWT = "<%= user_token %>";
-    const client = new vonageClientSDK.VonageClient({apiUrl: "<%= api_host %>"})
+    const client = new vonageClientSDK.VonageClient({apiUrl: "<%= api_host %>", websocketUrl: "<%= ws_host %>" })
   
     let callId = null;
 

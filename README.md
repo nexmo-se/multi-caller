@@ -4,6 +4,12 @@ This app calls multiple numbers at the same time. Only the first user to answer 
 
 # Deployment Guide
 
+## Prerequisites ##
+    - A Vonage application with a properly configured Voice Webhook and LVN (Vonage Number)
+      - Read more about [Getting Started with the Vonage Voice API](https://developer.vonage.com/en/voice/voice-api/getting-started)
+    - A publicly accessible Server to host your software so your webhooks are accessible by your Vonage app
+    - Or you can use a tunneling software to host it (ngrok, localtunnel, etc)
+
 ## 1. Install dependencies:
 
     npm install
@@ -26,7 +32,9 @@ Copy `.env-sample` file as `.env` and put in the values for the following:
  - **VONAGE_LVN**
         - Your VONAGE LVN to use for calling
  - **APIHOST**
-        - The API host you want to use (more on this later)            
+        - The API host you want to use (more on this later)
+ - **WSHOST**
+        - The Websocket host you want to use. Must match API Host (more on this later)  
 
 ## 3. Add your private key
 Open `private.key` and put your actual private key here
@@ -46,14 +54,8 @@ When the App hangs the call, the call is ended.
 When the User hangs the call, the call is ended.
 
 ## 6. Notes
-The **APIHOST ** is used to set both the server and the client to the same datacenter. If the set to default, they might spawn conference members on different datacenters and the connection will not happen.
+The **APIHOST** ans **WSHOST** is used to set both the server and the client to the same datacenter. They have to be set to the same
 
-The following are the available options
--   `api-us-3.vonage.com`: Virginia
--   `api-us-4.vonage.com`: Oregon
--   `api-eu-3.vonage.com`: Dublin
--   `api-eu-4.vonage.com`: Frankfurt
- -   `api-ap-3.vonage.com`: Singapore
--   `api-ap-4.vonage.com`: Sydney
+The datacenter URLs and an explanation of configuring datacenters are available here: https://developer.vonage.com/en/vonage-client-sdk/configure-data-center?source=vonage-client-sdk
 
 

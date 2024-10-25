@@ -20,6 +20,7 @@ const Vonage_APPLICATION_ID = process.env.APPLICATION_ID;
 const Vonage_PRIVATE_KEY = process.env.PRIVATE_KEY;
 const Vonage_LVN = process.env.VONAGE_LVN;
 const APIHOST = process.env.APIHOST;
+const WSHOST = process.env.WSHOST;
 var privateKey = fs.readFileSync(Vonage_PRIVATE_KEY);
 const join = path.join
 
@@ -103,12 +104,14 @@ console.log(token)
 app.get('/', function (req, res) {
 	res.render('index.ejs', {
     user_token: token,
-    api_host: APIHOST
+    api_host: APIHOST,
+    ws_host: WSHOST
   });
 });
 
 
-app.post('/webhooks/call-event', function (req, res) {	
+app.post('/webhooks/call-event', function (req, res) {
+  console.log("EVENT\n",req.body)
   const status = req.body.status || "nil"
   const to = req.body.to || "nil"
   const uuid = req.body.uuid || "000"
