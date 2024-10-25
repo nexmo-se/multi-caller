@@ -5,10 +5,10 @@ This app calls multiple numbers at the same time. Only the first user to answer 
 # Deployment Guide
 
 ## Prerequisites ##
-    - A Vonage application with a properly configured Voice Webhook and LVN (Vonage Number)
-      - Read more about [Getting Started with the Vonage Voice API](https://developer.vonage.com/en/voice/voice-api/getting-started)
-    - A publicly accessible Server to host your software so your webhooks are accessible by your Vonage app
-    - Or you can use a tunneling software to host it (ngrok, localtunnel, etc)
+- A Vonage application with a properly configured Voice Webhook and LVN (Vonage Number)
+  - Read more about [Getting Started with the Vonage Voice API](https://developer.vonage.com/en/voice/voice-api/getting-started)
+- A publicly accessible Server to host your software so your webhooks are accessible by your Vonage app
+- Or you can use a tunneling software to host it (ngrok, localtunnel, etc)
 
 ## 1. Install dependencies:
 
@@ -54,7 +54,7 @@ When the App hangs the call, the call is ended.
 When the User hangs the call, the call is ended.
 
 ## 6. Notes
-The **APIHOST** ans **WSHOST** is used to set both the server and the client to the same datacenter. They have to be set to the same
+The **APIHOST** ans **WSHOST** is used to set both the server and the client to the same datacenter. They have to be set to the same region.
 
 The datacenter URLs and an explanation of configuring datacenters are available here: https://developer.vonage.com/en/vonage-client-sdk/configure-data-center?source=vonage-client-sdk
 
