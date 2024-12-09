@@ -9,6 +9,7 @@ const { Auth } = require('@vonage/auth');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const fs = require('fs');
+const { list } = require('pm2');
 const conv_name = "multicall-vonage-"+Date.now()
 var app = express();
 app.use(express.json());
@@ -116,27 +117,35 @@ app.post('/webhooks/call-event', function (req, res) {
   const to = req.body.to || "nil"
   const uuid = req.body.uuid || "000"
   const disconnected_by = req.body.disconnected_by || "nil"
+  const rate = parseFloat(req.body.rate) || 0.00
 
   //when someone answers, hangup other callers
-  if(status == "answered" && to!="caller"){
+  if(status == "answered" && to!="caller"){    
+    members_to_remove = []
     Object.entries(calls).forEach(([parent_uuid,member_uuid]) => {      
+      
       if(member_uuid.includes(uuid)){
+        console.log("All UUID in registry:", member_uuid)
         console.log("A Caller answered, hanging up other callers")
         member_uuid.forEach((u, index) => {
           if(u!=uuid){
+            console.log("killing",uuid)
             vonage.voice.hangupCall(u)
             .then(resp =>console.log())
             .catch(err => console.error());
-            member_uuid.splice(index, 1)
+            members_to_remove.push[u]
           }
         })
+        member_uuid = [uuid]
+        console.log("Killed UUID", members_to_remove)
         return
       }
     })
+    
   }
 
-  //if the caller who answered hangs up, end the call
-  if(status == "completed" && to!="caller" && disconnected_by == "user"){
+  // if the caller who answered hangs up, end the call
+  if(status == "completed" && to!="caller" && disconnected_by == "user" && rate > 0.00){
     Object.entries(calls).forEach(([parent_uuid,member_uuid]) => {      
       if(member_uuid.includes(uuid)){
         console.log("Caller left, Ending Call")
