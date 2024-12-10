@@ -207,6 +207,7 @@ app.post('/webhooks/answer', function (req, res) {
       }
     ]).status(200)
     numbers.forEach((num) => {
+      num = num.trim().replaceAll("-","").replaceAll("+","").replaceAll(" ","")
       console.log("Number", num)
       vonage.voice.createOutboundCall({
         to: [
